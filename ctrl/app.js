@@ -18,18 +18,18 @@
       $stateProvider
           .state('profile', {
               url: '/profile',
-              templateUrl: 'tamplates/profile.html',
+              templateUrl: 'templates/profile.html',
               controller: 'profileController as profile'
 
           })
           .state('login', {
               url: '/login',
-              templateUrl: 'tamplates/login.html',
+              templateUrl: 'templates/login.html',
               controller: 'loginController as login'
           })
           .state('edit', {
               url: '/edit',
-              templateUrl: 'tamplates/edit.html',
+              templateUrl: 'templates/edit.html',
               controller: 'editController as edit'
           });
       $urlRouterProvider.otherwise('/login');

@@ -1,24 +1,4 @@
-// profile.controller('loginController', function($scope, $http, $state, $sessionStorage, $rootScope) {
-
-//     $http.get('json/user.json').then((response) => {
-//         $rootScope.user = response;
-//     });
-//     $scope.logIn = () => {
-//         for (let i = $rootScope.user.length - 1; i >= 0; i--) {
-//             if ($scope.login == $rootScope.user[i].login && $scope.password == $rootScope.user[i].password) {
-//                 $sessionStorage.user = $scope.login;
-//                 $state.go('profile');
-//                 return;
-//             }
-//         }
-//         alert('error');
-//     }
-//     $scope.logginOnEnter = (e) => {
-//         if (e.keyCode == 13) {
-//             $scope.logIn();
-//         }
-//     }
-// })
+;
 (function() {
     'use strict';
 
@@ -26,21 +6,28 @@
         .module('profile')
         .controller('loginController', loginController);
 
-    loginController.inject = ['$firebaseArray', '$timeout', 'userFactory', '$state', '$sessionStorage'];
+    loginController.inject = ['$state', '$sessionStorage', '$firebaseObject'];
 
-    function loginController($firebaseArray, $timeout, userFactory, $state, $sessionStorage) {
+    function loginController($state, $sessionStorage, $firebaseObject) {
         var vm = this,
-            users = firebase.database().ref().child("users");
-        vm.users = $firebaseArray(users);
-        vm.logIn = function() {
-            users.orderByChild("auth").equalTo(vm.login + '_' + vm.password).on("child_added", function(snapshot) {
-                $timeout(function() {
+            ref = firebase.database().ref(),
+            user = $firebaseObject(ref);
 
-                    $sessionStorage.user = snapshot.val();
+        vm.logIn = function() {
+            user.$loaded().then(function() {
+                if (user.user.login == vm.login && user.user.password == vm.password) {
+                    vm.user = user.user;
+                    $sessionStorage.user = user.user;
                     $state.go('profile');
-                });
-                // vm.res = snapshot.child("name");
+                } else {
+                    alert('The username and password you have entered do not match our records')
+                }
             });
+        }
+        vm.logginOnEnter = function(e) {
+            if (e.keyCode == 13) {
+                vm.logIn();
+            }
         }
     }
 })();
