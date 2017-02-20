@@ -32,7 +32,7 @@
               templateUrl: 'templates/edit.html',
               controller: 'editController as edit'
           });
-      $urlRouterProvider.otherwise('/login');
+      $urlRouterProvider.otherwise('/profile');
   })
 
   profile.run(($rootScope, $localStorage, $injector, $location) => {
