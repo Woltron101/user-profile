@@ -35,11 +35,11 @@
       $urlRouterProvider.otherwise('/login');
   })
 
-  profile.run(($rootScope, $sessionStorage, $injector, $location) => {
+  profile.run(($rootScope, $localStorage, $injector, $location) => {
       let $scope = $injector.get('$rootScope');
 
       $rootScope.$on('$stateChangeStart', () => {
-          if (!$sessionStorage.user) {
+          if (!$localStorage.user) {
               $location.path('/login')
           }
       });
